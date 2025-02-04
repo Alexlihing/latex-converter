@@ -32,15 +32,13 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById('message').innerHTML = data.message; // Use innerHTML to render <br>
+            document.getElementById('message').innerHTML = data.message;
         })        
         .catch(error => console.error('Error:', error));
     });
-
-    // Fetch the latest message from the backend when the page loads
     fetch('/message')
         .then(response => response.json())
         .then(data => {
-            document.getElementById('message').innerHTML = data.message; // Use innerHTML to render <br>
+            document.getElementById('message').innerHTML = data.message;
         });
 });

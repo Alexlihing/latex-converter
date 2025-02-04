@@ -4,36 +4,24 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
-let message = ''; // Global variable to store the message
-
-// Middleware to parse JSON requests
+let message = '';
 app.use(express.json());
-
-// Serve the static HTML and frontend files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Handle the form submission
 app.post('/submit', (req, res) => {
     const userInput = req.body.text;
-
     if (!userInput || userInput.trim() === '') {
         message = 'Error: Input cannot be empty.';
         return res.status(400).json({ error: message });
     }
-
-    // Convert user input to LaTeX format
     const latexOutput = convertToLatex(userInput);
-    
-    // Ensure proper new line formatting
     message = `LaTeX code:<br>${latexOutput.replace(/\n/g, '<br>')}`; 
-
     console.log("User Input:", userInput);
     console.log("Converted LaTeX:", latexOutput);
-
     res.json({ message: message, latex: latexOutput });
 });
 
-// Example function to simulate LaTeX conversion
+
 function convertToLatex(input) {
     // Mapping common logical expressions (both words and symbols) to LaTeX
     const operatorMap = {
@@ -75,14 +63,10 @@ function convertToLatex(input) {
     return `\\begin{align*}\n    ${lines.join('\n    ')}\n\\end{align*}`;
 }
 
-
-
-// API route to get the latest message
 app.get('/message', (req, res) => {
     res.json({ message });
 });
 
-// Start the server
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
